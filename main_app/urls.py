@@ -3,12 +3,16 @@ from . import views
 
 #create routes for patient portal, maps to views.py
 urlpatterns=[
-    path('', views.Home, name='home'), 
+    path('', views.Nothing, name='nothing'),
+    path('landing/', views.Landingpage, name='home'),
+    path('home/', views.Home, name='home'), 
     path('patient/request/',views.Patient_Request, name='patient_request'), 
     path('patient/detail/', views.Patient_Details, name='patient_detail'), # needs to be added to path once db seeded
-    path('accounts/signup/', views.Signup.as_view(), name="signup"),
+    path('signup/', views.Signup.as_view(), name="signup"),
+    path('login/', views.Login.as_view(), name="login"),
+    path('welcome/', views.Welcome, name="welcome"),
     path('about/', views.About, name="about"),
-   
+    path('logout/', views.Logout.as_view(), name="logout"),
 
 #create routes for Scheduler/Admin portal
     # path('admin/', views.Home_Admin, name='admin'),

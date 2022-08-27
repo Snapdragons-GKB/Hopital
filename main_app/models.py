@@ -1,5 +1,7 @@
 
 from django.db import models
+from django.contrib.auth import get_user_model
+
 from django.contrib.auth.models import AbstractUser
 import uuid
 
@@ -8,9 +10,18 @@ class User(AbstractUser):
     """
     Adding additional fields to the default User model.
     """
-    is_patient = models.BooleanField(default=False)
-    is_scheduler = models.BooleanField(default=False)
-    is_provider = models.BooleanField(default=False)
+    USERTYPE_CHOICE = [
+            ('Patient', 'Patient'),
+            ('Scheduler', 'Scheduler'),
+            ('Provider', 'Provider'),
+        ]
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=30)
+    email = models.EmailField(max_length=254 )
+    usertype = models.CharField(choices=USERTYPE_CHOICE, max_length=15, default='Patient')
+
+
+
 
     
 
@@ -52,6 +63,7 @@ class Provider(models.Model):
         OTHER = 10, 'Other'
 
     #providerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
+    
     provider_personal_blurb = models.CharField(max_length=200)
     provider_specialization = models.CharField(max_length=20, choices=specialty.choices, default=specialty.NONE)
     provider_insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
