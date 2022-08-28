@@ -1,10 +1,10 @@
 
 from django.shortcuts import render, redirect
 from django.views import View
-from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, UserLogin
+from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, UserLogin, PatientRequestForAppointment
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login, logout
-from main_app.models import Scheduler
+from main_app.models import Scheduler, Patient, Provider
 # Create your views here.
 
 
@@ -25,12 +25,28 @@ def Welcome(request):
 def About(request):
     return render(request, 'about.html')
 
-def Patient_Request(request):
-    return render(request, 'about.html')
+
 
 def Patient_Details(request):
-    # patient = Patient.Patient_id.objects.all()
-    return render(request, 'details.html')
+    #got our patient data by calling model
+    patientdata = Patient.objects.all()
+    #got our current user's id
+    ouruserrightnowID = request.user.id
+    #iterated through all patients in our data to find a patient with our current user's id
+    for patient in patientdata:
+        if patient.patientProfile_id == ouruserrightnowID:
+            #returned a dictionary with our 
+            return render(request, 'details.html', {
+                "age":patient.patient_age, 
+                "insurance": patient.patient_insurance_type,
+                "conditions": patient.patient_preexisting_conditions,
+                "medications": patient.patient_current_medications
+                })
+
+    return render(request, 'details.html', frozenset('a'))
+    
+    # return render(request, 'details.html', recastdata)
+
 
 
 
@@ -149,3 +165,22 @@ class Logout(View):
             logout(request)
             return render(request, "landingpage.html")
         return redirect('')
+
+#Here be dragons
+###############################################################################################################################
+
+class Patient_Request_Appointment(View):
+    def get(self, request):
+        form = PatientRequestForAppointment()
+        context = {"form": form}
+        return render(request, "patient/patient-request.html", context)
+        
+    def post(self, request):
+        form = PatientRequestForAppointment(request.POST)
+        if form.is_valid():
+            patientrequest = form.save(commit=False)
+            patientrequest.patientProfile = request.user
+            patientrequest.save()
+            return render(request, "welcome.html")
+        else:
+            return render(request, "patient/patient-request.html", {"form": form})

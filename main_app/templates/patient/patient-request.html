@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1 class="title">Patient request for treatment</h1>
+<h2>You are currently in patient/patient-request</h2>
+<form method="post" action="{% url 'patient_request' %}">
+  {% csrf_token %} {{ form.as_p }}
+  <input type="submit" class="btn" value="Click submit a request for treatment!" />
+
+</form>
+
+{% endblock %}

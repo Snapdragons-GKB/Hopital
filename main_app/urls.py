@@ -22,8 +22,9 @@ urlpatterns=[
     path('welcome/', views.Welcome, name="welcome"),
     path('about/', views.About, name="about"),
     
-    #patient stuff
-    path('patient/request/',views.Patient_Request, name='patient_request'), 
+
+    #route for testing patient request
+    path('patient/request/', views.Patient_Request_Appointment.as_view(), name='patient_request'),
     path('patient/detail/', views.Patient_Details, name='patient_detail'), 
 
 

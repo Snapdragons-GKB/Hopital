@@ -78,41 +78,74 @@ class Provider(models.Model):
     
 
 
-class PatientRequest(models.Model):
-    class request_status(models.TextChoices):
-        SUBMITTED = 0, 'Awating Response'
-        ACCEPTED = 1, 'Accepted'
-        REJECTED = 2, 'Rejected'
-        COMPLETED = 3, 'Completed'
+# class PatientRequest(models.Model):
+#     class request_status(models.TextChoices):
+#         SUBMITTED = 0, 'Awating Response'
+#         ACCEPTED = 1, 'Accepted'
+#         REJECTED = 2, 'Rejected'
+#         COMPLETED = 3, 'Completed'
     
-    class ailment_category(models.TextChoices):
-        NONE = 0, 'None'
-        GENERAL_MEDICINE = 1, 'General Medicine'
-        ORTHOPEDICS = 2, 'Orthopedics'
-        CARDIOLOGY = 3, 'Cardiology'
-        NEUROLOGY = 4, 'Neurology'
-        PEDIATRICS = 5, 'Pediatrics'
-        EMERGENCY = 6, 'Emergency'
-        PSYCHIATRY = 7, 'Psychiatry'
-        RADIOLOGY = 8, 'Radiology'
-        INTERNAL_MEDICINE = 9, 'Internal Medicine'
-        OTHER = 10, 'Other'
+#     class ailment_category(models.TextChoices):
+#         NONE = 0, 'None'
+#         GENERAL_MEDICINE = 1, 'General Medicine'
+#         ORTHOPEDICS = 2, 'Orthopedics'
+#         CARDIOLOGY = 3, 'Cardiology'
+#         NEUROLOGY = 4, 'Neurology'
+#         PEDIATRICS = 5, 'Pediatrics'
+#         EMERGENCY = 6, 'Emergency'
+#         PSYCHIATRY = 7, 'Psychiatry'
+#         RADIOLOGY = 8, 'Radiology'
+#         INTERNAL_MEDICINE = 9, 'Internal Medicine'
+#         OTHER = 10, 'Other'
 
 
-    request_status = models.CharField(max_length=20, choices=request_status.choices, default=request_status.SUBMITTED)
+#     request_status = models.CharField(max_length=20, choices=request_status.choices, default=request_status.SUBMITTED)
     
-    request_patient_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientofrequest')
-    request_scheduler_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schedulerofrequest', default=None)
-    request_doctor_profile= models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctorofrequest', default=None)
+#     request_patient_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientofrequest')
+#     request_scheduler_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schedulerofrequest', default=None)
+#     request_doctor_profile= models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctorofrequest', default=None)
     
-    request_ailment_category = models.CharField(max_length=20, choices=ailment_category.choices, default=ailment_category.NONE)
-    request_ailment_description = models.CharField(max_length=80)
+#     request_ailment_category = models.CharField(max_length=20, choices=ailment_category.choices, default=ailment_category.NONE)
+#     request_ailment_description = models.CharField(max_length=80)
     
-    request_preferred_date_range_start = models.DateField()
-    request_preferred_date_range_end = models.DateField()
+#     request_preferred_date_range_start = models.DateField()
+#     request_preferred_date_range_end = models.DateField()
 
-    request_procedure_date = models.DateField()
-    request_scheduling_comment = models.TextField(default=None)
+#     request_procedure_date = models.DateField()
+#     request_scheduling_comment = models.TextField(default=None)
 
-    request_doctor_comment_on_operation = models.TextField(default=None)
+#     request_doctor_comment_on_operation = models.TextField(default=None)
 
+
+
+
+#Here be dragons
+###############################################################################################################################
+
+class PatientRequestForAppointment(models.Model):
+    ailment_category = [
+        ('None', 'None'),
+        ('General', 'General'),
+        ('Orthopedics', 'Orthopedics'),
+        ('Cardiology', 'Cardiology'),
+        ('Neurology', 'Neurology'),
+        ('Pediatrics', 'Pediatrics'),
+        ('Emergency', 'Emergency'),
+        ('Psychiatry', 'Psychiatry'),
+        ('Radiology', 'Radiology'),
+        ('Internal Medicine', 'Internal Medicine'),
+        ('Other', 'Other'),
+        ]
+    
+    #natively added
+    patientProfile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientofrequest')
+    patientInsuranceType = models.CharField(max_length=20, choices=Patient.INSURANCE_CHOICE, default=Patient.INSURANCE_CHOICE[0][0])
+
+
+    #patient entered
+    patient_ailment_category = models.CharField(max_length=20, choices=ailment_category, default=ailment_category[0][0])
+    patient_ailment_description = models.CharField(max_length=80)
+    patient_preferred_date = models.DateField()
+
+
+    

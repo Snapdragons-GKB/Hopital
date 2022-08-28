@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django import forms
 from django.contrib.auth import get_user_model
 
-from main_app.models import Patient, Provider
+from main_app.models import Patient, Provider, PatientRequestForAppointment
 User = get_user_model()
 
 
@@ -74,8 +74,6 @@ class UserLogin(AuthenticationForm):
         ('Scheduler', 'Scheduler'),
         ('Provider', 'Provider'),
     ]
-    username = forms.CharField(max_length=30, required=True)
-    password = forms.CharField(widget=forms.PasswordInput, required=True)
     usertype = forms.ChoiceField(choices=USERTYPE_CHOICE, required=True)
 
     class Meta:
@@ -85,32 +83,20 @@ class UserLogin(AuthenticationForm):
             ('Scheduler', 'Scheduler'),
             ('Provider', 'Provider'),
         ]
-        fields = ('username', 'password', 'usertype')
+        fields = ('usertype')
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
-            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
             'usertype': forms.Select(attrs={'class': 'form-control', 'placeholder': 'usertype'}, choices=USERTYPE_CHOICE),
         }
         labels = {
-            'username': 'Username',
-            'password': 'Password',
             'usertype': 'User Type'
         }
         help_texts = {
-            'username': None,
-            'password': None,
             'usertype': None
         }
-        error_messages = {
-            'username': {
-                'unique': "afdf",
-            },
-            'password': {
-                'unique': "asdf",
-            },
+        
 
 
-        }
+        
 
 
 
@@ -245,4 +231,59 @@ class AdditionalProvider(ModelForm):
 #Don't depend on anything below here
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
+class PatientRequestForAppointment(ModelForm):
+    ailment_category = [
+        ('None', 'None'),
+        ('General', 'General'),
+        ('Orthopedics', 'Orthopedics'),
+        ('Cardiology', 'Cardiology'),
+        ('Neurology', 'Neurology'),
+        ('Pediatrics', 'Pediatrics'),
+        ('Emergency', 'Emergency'),
+        ('Psychiatry', 'Psychiatry'),
+        ('Radiology', 'Radiology'),
+        ('Internal Medicine', 'Internal Medicine'),
+        ('Other', 'Other'),
+        ]
+    #native adds not included 
 
+    #patient entered
+    patient_ailment_category = forms.ChoiceField(choices=ailment_category, required=True)
+    patient_ailment_description = forms.CharField(max_length=200)
+    patient_preferred_date = forms.DateField(widget=forms.SelectDateWidget())
+
+
+    class Meta:
+        ailment_category = [
+        ('None', 'None'),
+        ('General', 'General'),
+        ('Orthopedics', 'Orthopedics'),
+        ('Cardiology', 'Cardiology'),
+        ('Neurology', 'Neurology'),
+        ('Pediatrics', 'Pediatrics'),
+        ('Emergency', 'Emergency'),
+        ('Psychiatry', 'Psychiatry'),
+        ('Radiology', 'Radiology'),
+        ('Internal Medicine', 'Internal Medicine'),
+        ('Other', 'Other'),
+        ]
+        model = PatientRequestForAppointment
+        exclude = ['user']
+        fields = ('patient_ailment_category', 'patient_ailment_description', 'patient_preferred_date')
+        widgets = {
+            'patient_ailment_category': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Ailment Category'}, choices=ailment_category),
+            'patient_ailment_description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ailment Description'}),
+            'patient_preferred_date': forms.SelectDateWidget(attrs={'class': 'form-control', 'placeholder': 'Preferred Date Range Start'}),
+        }
+        labels = {
+            'patient_ailment_category': 'Ailment Category',
+            'patient_ailment_description': 'Ailment Description',
+            'patient_preferred_date': 'Preferred Date Range Start',
+        }
+        help_texts = {
+            'patient_ailment_category': None,
+            'patient_ailment_description': None,
+            'patient_preferred_date': None,
+        }
+
+        
