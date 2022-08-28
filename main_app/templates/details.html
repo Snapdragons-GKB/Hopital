@@ -1,26 +1,18 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{user.first_name}}'s Details</h1>
+<h1>{{user.first_name}} {{user.last_name}}'s Patient Details</h1>
 <div class="container">
     <div class="notification is-primary">
 
-        <p>Patient Details:</p>
-        <p>Name: {{user.first_name}} {{user.last_name}}</p>
-        <!-- <p>{{pd}}</p> -->
-        <p>{{age}}</p>
-        <p>{{insurance}}</p>
-        <p>{{conditions}}</p>
-        <p>{{medications}}</p>
+            <p>{{user.first_name}}'s Age:</p><p class="has-text-black ">{{age}}</p>
+            <p>{{user.first_name}}'s Insurance Type:</p><p class="has-text-black ">{{insurance}}</p> 
+            <p>{{user.first_name}}'s Preexisting Conditions:</p><p class=" has-text-black">{{conditions}}</p> 
+            <p>{{user.first_name}}'s Current Medications:</p><p class="has-text-black">{{medications}}</p>
+    
+      
+  
 
-
-
-        
-
-
-
-        
-
-</div>
-
-{% endblock %}
+    
+  </div>
+  {% endblock %} 
