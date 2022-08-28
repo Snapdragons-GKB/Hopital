@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<!-- This page is intended for additional provider registration. -->
+<h1 class="title">Additional Provider Registration</h1>
+<form method="post" action="{% url 'provider-registration' %}">
+  {% csrf_token %} {{ form.as_p }}
+  <input type="submit" class="btn" value="Click to register as provider!" />
 
-
+</form>
 
 {% endblock %}

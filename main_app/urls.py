@@ -3,16 +3,30 @@ from . import views
 
 #create routes for patient portal, maps to views.py
 urlpatterns=[
-    path('', views.Nothing, name='nothing'),
-    path('landing/', views.Landingpage, name='home'),
-    path('home/', views.Home, name='home'), 
-    path('patient/request/',views.Patient_Request, name='patient_request'), 
-    path('patient/detail/', views.Patient_Details, name='patient_detail'), # needs to be added to path once db seeded
+    #initial definitions for portal
+    path('', views.Nothing, name='nothing'), #A redirect to the landing page
+    path('landing/', views.Landingpage, name='home'), #The landing page for everyone
+    
+    #holy trinity of actions, defined in views.py
     path('signup/', views.Signup.as_view(), name="signup"),
     path('login/', views.Login.as_view(), name="login"),
+    path('logout/', views.Logout.as_view(), name="logout"),
+
+
+    #routes for additional patient/provider registration
+    path('signup/patient-registration/', views.Patient_Additional_Reg.as_view(), name="patient-registration"),
+    path('signup/provider-registration/', views.Provider_Additional_Reg.as_view(), name="provider-registration"),
+
+    #somewhat diffusely defined behaviors for before/after login, treat with some skepticism
+    path('home/', views.Home, name='home'), 
     path('welcome/', views.Welcome, name="welcome"),
     path('about/', views.About, name="about"),
-    path('logout/', views.Logout.as_view(), name="logout"),
+    
+    #patient stuff
+    path('patient/request/',views.Patient_Request, name='patient_request'), 
+    path('patient/detail/', views.Patient_Details, name='patient_detail'), 
+
+
 
 #create routes for Scheduler/Admin portal
     # path('admin/', views.Home_Admin, name='admin'),

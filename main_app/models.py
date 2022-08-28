@@ -26,47 +26,47 @@ class User(AbstractUser):
     
 
 class Patient(models.Model):
-    class insurance(models.TextChoices):
-        NONE = 0, 'Without Insurance'
-        MEDICAID = 1, 'Medicaid'
-        MEDICARE = 2, 'Medicare'
-        PRIVATE = 3, 'Private'
-
+    INSURANCE_CHOICE = [
+        ('Without Insurance', 'Without Insurance'),
+        ('Medicaid', 'Medicaid'),
+        ('Medicare', 'Medicare'),
+        ('Private', 'Private'),
+    ]
     
-    #patientProfile = models.OneToOneField(User, on_delete=models.CASCADE, default=None, null=True)
+    patientProfile = models.OneToOneField(User, on_delete=models.CASCADE, default=None, null=True)
     patient_age = models.IntegerField()
-    patient_insurance_type = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
+    patient_insurance_type = models.CharField(max_length=20, choices=INSURANCE_CHOICE, default=INSURANCE_CHOICE[0][0])
     patient_preexisting_conditions = models.TextField(max_length=80)
     patient_current_medications = models.TextField(max_length=80)
 
 class Scheduler(models.Model):
-    schedulerProfile = models.TextField(max_length=80)
+    providerProfile = models.OneToOneField(User, on_delete=models.CASCADE, default=None, null=True)
+
 
 class Provider(models.Model):
-    class insurance(models.TextChoices):
-        NONE = 0, 'Without Insurance'
-        MEDICAID = 1, 'Medicaid'
-        MEDICARE = 2, 'Medicare'
-        PRIVATE = 3, 'Private'
-
-    class specialty(models.TextChoices):
-        NONE = 0, 'None'
-        CARDIOLOGY = 1, 'Cardiology'
-        NEUROLOGY = 2, 'Neurology'
-        PEDIATRICS = 3, 'Pediatrics'
-        SURGERY = 4, 'Surgery'
-        DENTAL = 5, 'Dental'
-        GENERAL_MEDICINE = 6, 'General Medicine'
-        PSYCHIATRY = 7, 'Psychiatry'
-        RADIOLOGY = 8, 'Radiology'
-        SURGICAL = 9, 'Surgical'
-        OTHER = 10, 'Other'
-
-    #providerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
-    
+    SPECIALTY_CHOICE = [
+        ('None', 'None'),
+        ('General', 'General'),
+        ('Orthopedics', 'Orthopedics'),
+        ('Cardiology', 'Cardiology'),
+        ('Neurology', 'Neurology'),
+        ('Pediatrics', 'Pediatrics'),
+        ('Emergency', 'Emergency'),
+        ('Psychiatry', 'Psychiatry'),
+        ('Radiology', 'Radiology'),
+        ('Internal Medicine', 'Internal Medicine'),
+        ('Other', 'Other'),
+    ]
+    INSURANCE_CHOICE = [
+        ('Without Insurance', 'Without Insurance'),
+        ('Medicaid', 'Medicaid'),
+        ('Medicare', 'Medicare'),
+        ('Private', 'Private'),
+    ]
+    providerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
     provider_personal_blurb = models.CharField(max_length=200)
-    provider_specialization = models.CharField(max_length=20, choices=specialty.choices, default=specialty.NONE)
-    provider_insurances_taken = models.CharField(max_length=20, choices=insurance.choices, default=insurance.NONE)
+    provider_specialization = models.CharField(max_length=20, choices=SPECIALTY_CHOICE, default=SPECIALTY_CHOICE[0][0])
+    provider_insurances_taken = models.CharField(max_length=20, choices=INSURANCE_CHOICE, default=INSURANCE_CHOICE[0][0])
     day1 = models.BooleanField(default=False)
     day2 = models.BooleanField(default=False)
     day3 = models.BooleanField(default=False)
@@ -87,15 +87,15 @@ class PatientRequest(models.Model):
     
     class ailment_category(models.TextChoices):
         NONE = 0, 'None'
-        CARDIOLOGY = 1, 'Cardiology'
-        NEUROLOGY = 2, 'Neurology'
-        PEDIATRICS = 3, 'Pediatrics'
-        SURGERY = 4, 'Surgery'
-        DENTAL = 5, 'Dental'
-        GENERAL_MEDICINE = 6, 'General Medicine'
+        GENERAL_MEDICINE = 1, 'General Medicine'
+        ORTHOPEDICS = 2, 'Orthopedics'
+        CARDIOLOGY = 3, 'Cardiology'
+        NEUROLOGY = 4, 'Neurology'
+        PEDIATRICS = 5, 'Pediatrics'
+        EMERGENCY = 6, 'Emergency'
         PSYCHIATRY = 7, 'Psychiatry'
         RADIOLOGY = 8, 'Radiology'
-        SURGICAL = 9, 'Surgical'
+        INTERNAL_MEDICINE = 9, 'Internal Medicine'
         OTHER = 10, 'Other'
 
 
