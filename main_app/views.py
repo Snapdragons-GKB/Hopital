@@ -59,7 +59,7 @@ class Signup(View):
                 return redirect('patient-registration/')
             elif user.usertype == 'Scheduler':
                 sched = Scheduler()
-                sched.providerProfile=request.user
+                sched.schedulerProfile=request.user
                 sched.save() #this may work, check later
                 return render(request, "home.html")
             elif user.usertype == 'Provider':

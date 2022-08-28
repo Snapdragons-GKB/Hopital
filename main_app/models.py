@@ -40,7 +40,7 @@ class Patient(models.Model):
     patient_current_medications = models.TextField(max_length=80)
 
 class Scheduler(models.Model):
-    providerProfile = models.OneToOneField(User, on_delete=models.CASCADE, default=None, null=True)
+    schedulerProfile = models.OneToOneField(User, on_delete=models.CASCADE, default=None, null=True)
 
 
 class Provider(models.Model):
