@@ -245,27 +245,4 @@ class AdditionalProvider(ModelForm):
 #Don't depend on anything below here
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class PatientRequest(ModelForm): 
-    SPECIALTY_CHOICE = [
-        ('None', 'None'),
-        ('General', 'General'),
-        ('Orthopedics', 'Orthopedics'),
-        ('Cardiology', 'Cardiology'),
-        ('Neurology', 'Neurology'),
-        ('Pediatrics', 'Pediatrics'),
-        ('Emergency', 'Emergency'),
-        ('Psychiatry', 'Psychiatry'),
-        ('Radiology', 'Radiology'),
-        ('Internal Medicine', 'Internal Medicine'),
-        ('Other', 'Other'),
-    ]
 
-    INSURANCE_CHOICE = [
-        ('Without Insurance', 'Without Insurance'),
-        ('Medicaid', 'Medicaid'),
-        ('Medicare', 'Medicare'),
-        ('Private', 'Private'),
-    ]
-
-    ailment_category = forms.ChoiceField(choices=SPECIALTY_CHOICE, required=True)
-    ailment_description = forms.CharField(max_length=200)
