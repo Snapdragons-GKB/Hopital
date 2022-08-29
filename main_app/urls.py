@@ -36,8 +36,8 @@ urlpatterns=[
 
 #create routes for Provider portal
     path('provider/', views.Provider_Home, name='provider'),
-    path('provider/schedule', views.Provider_Schedule, name='schedule'),
-    path('provider/client_list', views.Provider_Clientlist, name='client_list')
+    # path('provider/schedule', views.Provider_Schedule, name='schedule'),
+    # path('provider/client_list', views.Provider_Clientlist, name='client_list')
 
 
     

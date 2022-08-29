@@ -51,11 +51,11 @@ def Patient_Details(request):
 def Provider_Home(request): 
     return render(request, 'provider_base.html')
 
-def Provider_Schedule(request): 
-    return render(request, 'provider_schedule.html')
+# def Provider_Schedule(request): 
+#     return render(request, 'provider_schedule.html')
 
-def Provider_Clientlist(request): 
-    return render(request, 'provider_clientlist')
+# def Provider_Clientlist(request): 
+#     return render(request, 'provider_clientlist')
 
 
 

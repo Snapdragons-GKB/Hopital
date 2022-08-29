@@ -24,18 +24,10 @@
             {% else %}
             <a class="navbar-item" href="{% url 'login' %}" >Not logged in</a>
             {% endif %}
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
+           
         </div>
         {% if user.is_authenticated %}
-        <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'schedule' %}">Schedule</a>
-            <a class="navbar-item" href="{% url 'client_list' %}">Client List</a>
-            <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
-        </div>
+       <h1> Welcome Provider</h1>
         {% else %}
         <div class="navbar-menu navbar-end">
             <a class="navbar-item" href="{% url 'signup' %}">Sign Up</a>
