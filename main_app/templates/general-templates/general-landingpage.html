@@ -1,34 +1,7 @@
-{% extends 'general-templates/base.html' %}
+{% extends 'base.html' %}
+
 {% block content %}
-<header>
-    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            {% if user.is_authenticated %}
-            <a class="navbar-item" href="{% url 'welcome' %}" >Welcome {{user.first_name}}</a>
-            {% else %}
-            <a class="navbar-item" href="{% url 'login' %}" >Not logged in</a>
-            {% endif %}
-            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'about' %}">About</a>
-            <a class="navbar-item" href="{% url 'patient_detail' %}">Patient Detail</a>
-            <a class="navbar-item" href="{% url 'patient_request' %}">Patient Request</a>
-            <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
-        </div>
-        {% else %}
-        <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'signup' %}">Sign Up</a>
-            <a class="navbar-item" href="{% url 'login' %}">Log In</a>
-        </div>
-        {% endif %}
-    </nav>
-    </header>
+
 
 <h1>I am the landing page. You should see me if you are not logged in and you just came into the site.</h1>
 <h2>Home to the GKB Hospital</h2>
