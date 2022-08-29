@@ -31,7 +31,7 @@ urlpatterns=[
     # scheduler
     path('scheduler/pendingrequests/', views.Pending_Requests, name='pending_requests'),
     path('scheduler/approve/', views.Approve, name='approve'),
-    path('scheduler/reject/', views.Reject, name='re'),
+    path('scheduler/reject/', views.Reject, name='reject'),
 
 
 #create routes for Scheduler/Admin portal
