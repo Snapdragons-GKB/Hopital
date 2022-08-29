@@ -17,7 +17,7 @@
 
 <body>
     <header>
-    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-black" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             {% if user.is_authenticated %}
             <a class="navbar-item" href="{% url 'welcome' %}" >Welcome {{user.first_name}}</a>
@@ -32,8 +32,8 @@
         </div>
         {% if user.is_authenticated %}
         <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url '' %}">Schedule</a>
-            <a class="navbar-item" href="{% url '' %}">Client List</a>
+            <a class="navbar-item" href="{% url 'schedule' %}">Schedule</a>
+            <a class="navbar-item" href="{% url 'client_list' %}">Client List</a>
             <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
         </div>
         {% else %}

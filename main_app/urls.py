@@ -35,9 +35,9 @@ urlpatterns=[
     # path('admin/patient_list/', views.Admin_Patient_list.as_view(), name='admin_patient_list'),
 
 #create routes for Provider portal
-    # path('provider/', views.Home_Provider.as_view(), name='provider'),
-    # path('provider/schedule', views.Schedule.as_view(), name='schedule'),
-    # path('provider/client_list', views.Provider_client_list.as_views(), name='client_list')
+    path('provider/', views.Provider_Home, name='provider'),
+    path('provider/schedule', views.Provider_Schedule, name='schedule'),
+    path('provider/client_list', views.Provider_Clientlist, name='client_list')
 
 
     
