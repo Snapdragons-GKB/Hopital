@@ -130,7 +130,7 @@ class Provider_Additional_Reg(View):
             provider = form.save(commit=False)
             provider.providerProfile =request.user
             provider.save()
-            return render(request, "home.html")
+            return render(request, "provider_base.html")
 
         else:
             return render(request, "additional-reg/provider-reg.html", {"form": form})
