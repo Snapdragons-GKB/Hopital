@@ -31,12 +31,12 @@ Hopital Scheduler is a full stack application built with Django, Django Template
 - As a physician, I want all the information on the patient’s illness/injury/condition that they supplied so that I can prepare accordingly for their consultation.
 
 # Wireframes :framed_picture:
-![](../../../Desktop/Screen%20Shot%202022-08-22%20at%202.04.11%20PM.png)
+(../../../Desktop/Screen%20Shot%202022-08-22%20at%202.04.11%20PM.png)
 
-![](../../../Desktop/Screen%20Shot%202022-08-22%20at%202.12.29%20PM.png)
+(../../../Desktop/Screen%20Shot%202022-08-22%20at%202.12.29%20PM.png)
 
-![](../../../Desktop/Screen%20Shot%202022-08-22%20at%202.22.33%20PM.png)
+(../../../Desktop/Screen%20Shot%202022-08-22%20at%202.22.33%20PM.png)
 
-![](../../../Desktop/Screen%20Shot%202022-08-22%20at%202.20.02%20PM.png)
+(../../../Desktop/Screen%20Shot%202022-08-22%20at%202.20.02%20PM.png)
 
 ## Link To Live Site
