@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <header>
-    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-black" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
             {% if user.is_authenticated %}
             <a class="navbar-item" href="{% url 'welcome' %}" >Welcome {{user.first_name}}</a>
@@ -16,9 +16,6 @@
         </div>
         {% if user.is_authenticated %}
         <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'about' %}">About</a>
-            <a class="navbar-item" href="{% url 'patient_detail' %}">Patient Detail</a>
-            <a class="navbar-item" href="{% url 'patient_request' %}">Patient Request</a>
             <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
         </div>
         {% else %}
@@ -29,8 +26,6 @@
         {% endif %}
     </nav>
     </header>
-
-<h1>I am the welcome page. You should see me if you have just logged in.</h1>
-
-
-{% endblock %}
+    <h1> Welcome Provider: here is your Schedule for the day!</h1>
+  </div>
+  {% endblock %} 

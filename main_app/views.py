@@ -15,6 +15,8 @@ def Landingpage(request):
     return render(request, 'landingpage.html')
 
 @login_required(redirect_field_name=None)
+
+# Views for patient portal 
 def Home(request):
     #return render(request, '../main_app/templates/home.html')
     return render(request, 'home.html')
@@ -24,8 +26,6 @@ def Welcome(request):
 
 def About(request):
     return render(request, 'about.html')
-
-
 
 def Patient_Details(request):
     #got our patient data by calling model
@@ -46,6 +46,19 @@ def Patient_Details(request):
     return render(request, 'details.html', frozenset('a'))
     
     # return render(request, 'details.html', recastdata)
+
+# views for Provider portal 
+def Provider_Home(request): 
+    return render(request, 'provider_base.html')
+
+# def Provider_Schedule(request): 
+#     return render(request, 'provider_schedule.html')
+
+# def Provider_Clientlist(request): 
+#     return render(request, 'provider_clientlist')
+
+
+
 
 
 
@@ -117,7 +130,7 @@ class Provider_Additional_Reg(View):
             provider = form.save(commit=False)
             provider.providerProfile =request.user
             provider.save()
-            return render(request, "home.html")
+            return render(request, "provider_base.html")
 
         else:
             return render(request, "additional-reg/provider-reg.html", {"form": form})
