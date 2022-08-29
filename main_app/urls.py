@@ -16,6 +16,7 @@ urlpatterns=[
     #routes for additional patient/provider registration
     path('signup/patient-registration/', views.Patient_Additional_Reg.as_view(), name="patient-registration"),
     path('signup/provider-registration/', views.Provider_Additional_Reg.as_view(), name="provider-registration"),
+    
 
     #somewhat diffusely defined behaviors for before/after login, treat with some skepticism
     path('home/', views.Home, name='home'), 
@@ -27,6 +28,10 @@ urlpatterns=[
     path('patient/request/', views.Patient_Request_Appointment.as_view(), name='patient_request'),
     path('patient/detail/', views.Patient_Details, name='patient_detail'), 
 
+    # scheduler
+    path('scheduler/pendingrequests/', views.Pending_Requests, name='pending_requests'),
+    path('scheduler/approve/', views.Approve, name='approve'),
+    path('scheduler/reject/', views.Reject, name='re'),
 
 
 #create routes for Scheduler/Admin portal

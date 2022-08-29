@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+
+<h1>Pending Requests</h1>
+<table id="exam">
+    {% for object in object_list %}
+    <tr>
+      <td>{{ object }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% for request in patientrequestforappointment %}
+<div class="card">
+	<a href="{% url 'approve' request.patientProfile_id %}">
+    <a href="{% url 'reject' request.patientProfile_id %}">
+		<div class="card-content">
+			<span class="card-title">{{ request.patient_ailment_category }}</span>
+			<p>{{ request.patientInsuranceType }}</p>
+			<p>{{ request.Profile_id }}</p>
+		</div>
+	</a>
+</div>
+{% endfor %} {% endblock %}

@@ -25,6 +25,12 @@ def Welcome(request):
 def About(request):
     return render(request, 'about.html')
 
+def Approve(request):
+    return render(request, 'approve.html')
+
+def Reject(request):
+    return render(request, 'reject.html')
+
 
 
 def Patient_Details(request):
@@ -48,9 +54,15 @@ def Patient_Details(request):
     # return render(request, 'details.html', recastdata)
 
 
-
-
-
+def Pending_Requests(request):
+    pendingrequests = PatientRequestForAppointment.objects.all()
+    for allrequests in pendingrequests:
+            return render(request, 'details.html', {
+                "ailment_category": allrequests.ailment_category, 
+                "insurance": allrequests.patientInsuranceType,
+                "conditions": allrequests.patient_preferred_date,
+                })
+    return render(request, 'pendingrequests.html', frozenset('a'))
 
 
 
@@ -74,10 +86,7 @@ class Signup(View):
                 # return render(request, "additional_reg/patient-reg.html", {"form": form})
                 return redirect('patient-registration/')
             elif user.usertype == 'Scheduler':
-                sched = Scheduler()
-                sched.schedulerProfile=request.user
-                sched.save() #this may work, check later
-                return render(request, "home.html")
+                return render(request, "pendingrequests.html")
             elif user.usertype == 'Provider':
                 return redirect('provider-registration/')
         else:
