@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends 'general-templates/base.html' %}
+
 {% block content %}
 <header>
     <nav class="navbar is-link" role="navigation" aria-label="main navigation">
@@ -29,8 +30,16 @@
         {% endif %}
     </nav>
     </header>
+<h1 class="card-content">Hello, 
+    Hopital application was created to aid in the headaches that come with scheduling a surgical procedure by allowing patients direct ability to schedule an operation when they please and with the Surgeon of their choosing. This application works to reduce the confusion that comes with Insurance coverage and scheduling by being a one stop shop for both patients and providers.</h1>
 
-<h1>I am the welcome page. You should see me if you have just logged in.</h1>
-
-
-{% endblock %}
+{% for provider in Providers %}
+<div class="card">
+        <div class="card-content">
+            <span class="card-title">{{ provider.first_name }}{{ provider.last_name }}</span>
+            <p>Specialty: {{ provider.provider_specialization }}</p>
+            <p>About Dr. {{ provider.last_name }}: {{ provider.personal_blurb }}</p>
+        </div>
+    </a>
+</div>
+{% endfor %} {% endblock %}
