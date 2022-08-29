@@ -2,6 +2,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+
 from django.contrib.auth.models import AbstractUser
 import uuid
 
@@ -15,11 +16,13 @@ class User(AbstractUser):
             ('Scheduler', 'Scheduler'),
             ('Provider', 'Provider'),
         ]
+
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(max_length=254 )
     usertype = models.CharField(choices=USERTYPE_CHOICE, max_length=15, default='Patient')
 
+    
 
 
 

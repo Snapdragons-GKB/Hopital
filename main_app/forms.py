@@ -22,6 +22,7 @@ class UserForm(UserCreationForm):
     password2 = forms.CharField(widget=forms.PasswordInput, required=True)
 
     class Meta:
+        
         USERTYPE_CHOICE = [
             ('Patient', 'Patient'),
             ('Scheduler', 'Scheduler'),
@@ -68,29 +69,41 @@ class UserForm(UserCreationForm):
         }
 
 
+
+
+
+
 class UserLogin(AuthenticationForm):
     USERTYPE_CHOICE = [
         ('Patient', 'Patient'),
         ('Scheduler', 'Scheduler'),
         ('Provider', 'Provider'),
     ]
-    usertype = forms.ChoiceField(choices=USERTYPE_CHOICE, required=True)
+    username = forms.CharField(max_length=30, required=False)
+    password = forms.PasswordInput()
+    usertype = forms.ChoiceField(choices=USERTYPE_CHOICE, required=False)
 
     class Meta:
-        model = User
+        
         USERTYPE_CHOICE = [
             ('Patient', 'Patient'),
             ('Scheduler', 'Scheduler'),
             ('Provider', 'Provider'),
         ]
-        fields = ('usertype')
+        fields = ('usertype', 'username', 'password')
         widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
             'usertype': forms.Select(attrs={'class': 'form-control', 'placeholder': 'usertype'}, choices=USERTYPE_CHOICE),
         }
         labels = {
+            'username': 'Username',
+            'password': 'Password',
             'usertype': 'User Type'
         }
         help_texts = {
+            'username': None,
+            'password': None,
             'usertype': None
         }
         

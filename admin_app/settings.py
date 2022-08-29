@@ -88,8 +88,8 @@ DATABASES = {
 AUTH_USER_MODEL = 'main_app.User'
 
 #Extending the default userform
-AUTH_USER_CREATION_FORM = 'main_app.UserForm'
-AUTH_USER_AUTHENTICATION_FORM = 'main_app.LoginForm'
+AUTH_USER_CREATION_FORM = 'main_app.forms.UserCreationForm'
+AUTH_USER_AUTHENTICATION_FORM = 'main_app.forms.UserAuthenticationForm'
 
 
 # Password validation
@@ -132,8 +132,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_URL = "login/"
+LOGIN_URL = "/"
 SIGNUP_URL = "signup/"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+AUTOMATIC_COOKIE_AGE = 180 # 5 minutes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+
+AUTHENTICATION_BACKENDS = [
+    'main_app.backends.CheckPasswordBackend',
+]
