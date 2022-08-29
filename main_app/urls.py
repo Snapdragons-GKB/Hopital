@@ -29,6 +29,11 @@ urlpatterns=[
     path('patient/request/', views.Patient_Request_Appointment.as_view(), name='patient_request'),
     path('patient/detail/', views.Patient_Details, name='patient_detail'), 
 
+    #create routes for Provider portal
+    path('provider/', views.Provider_Home, name='provider'),
+    # path('provider/schedule', views.Provider_Schedule, name='schedule'),
+    # path('provider/client_list', views.Provider_Clientlist, name='client_list')
+
 
 
 #create routes for Scheduler/Admin portal
@@ -36,10 +41,7 @@ urlpatterns=[
     # path('admin/patient_request/', views.Admin_Patient_Request.as_view(), name='admin_patient_request'),
     # path('admin/patient_list/', views.Admin_Patient_list.as_view(), name='admin_patient_list'),
 
-#create routes for Provider portal
-    path('provider/', views.Provider_Home, name='provider'),
-    # path('provider/schedule', views.Provider_Schedule, name='schedule'),
-    # path('provider/client_list', views.Provider_Clientlist, name='client_list')
+
 
 
     
