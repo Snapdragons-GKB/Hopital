@@ -1,10 +1,13 @@
 
 from django.shortcuts import render, redirect
 from django.views import View
-from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, UserLogin, PatientRequestForAppointment
+from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, PatientRequestForAppointment, UserLogin
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login, logout
-from main_app.models import Scheduler, Patient, Provider
+from django.contrib.auth import authenticate, logout, get_user_model, login
+
+from main_app.models import Scheduler, Patient
+User=get_user_model()
+
 # Create your views here.
 
 
@@ -32,8 +35,10 @@ def Patient_Details(request):
     patientdata = Patient.objects.all()
     #got our current user's id
     ouruserrightnowID = request.user.id
+    print(request.user.id)
     #iterated through all patients in our data to find a patient with our current user's id
     for patient in patientdata:
+        print(patient)
         if patient.patientProfile_id == ouruserrightnowID:
             #returned a dictionary with our 
             return render(request, 'details.html', {
@@ -61,6 +66,42 @@ def Provider_Home(request):
 
 
 
+# def login(request) :
+#     if request.method == 'POST':
+#         form = login(request.POST)
+#         if form.is_valid():
+#           username = form.cleaned_data['email']
+#           password = form.cleaned_data['password']
+#           user = authenticate(username=username, password=password)
+
+#           if user is not None:
+#               form = login()
+#               login(request, user)
+
+
+class Login(View):
+    def get(self, request):
+        form = UserLogin()
+        return render(request, 'registration/login.html', {'form': form})
+
+    def post(self, request):
+        form = UserLogin(data=request.POST)
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            print("glorious")
+            login(request, user)
+            return redirect('home')
+        # if user.check_password(request.POST['password']):
+        #     login(request, user)
+        #     return redirect('home')
+        # print(user)
+        else:
+            print("fail")
+            return render(request, 'registration/login.html', {'form': form})
+
+       
+        
+
 
 
 
@@ -76,10 +117,10 @@ class Signup(View):
         return render(request, "registration/signup.html", context)
 
     def post(self, request):
-        form = UserForm(request.POST)
+        form = UserForm(data=request.POST)
         if form.is_valid():
             user = form.save()
-            user.set_password(user.password)
+            #user.set_password(user.password) the true height of my insanity
             user.save()
             login(request, user)
 
@@ -136,40 +177,21 @@ class Provider_Additional_Reg(View):
             return render(request, "additional-reg/provider-reg.html", {"form": form})
 
 
+
+
+
+
+
+
 #classic login form. On post, checks usertype, routing to separate home page, though that is not built out yet
-class Login(View):
-    def get(self, request):
-        form = UserLogin()
-        context = {"form": form}
-        return render(request, "registration/login.html", context)
 
-    def post(self, request):
-        form = UserLogin(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            return render(request, "welcome.html")
-            # if user is not None:
 
-            #     if user.usertype == 'Patient':
-            #         return render(request, "home.html")
-            #         #redirect to patient home
-            #     elif user.usertype == 'Scheduler':
-            #         return render(request, "home.html")
-            #         #redirect to scheduler home
-            #     elif user.usertype == 'Provider':
-            #         return render(request, "home.html")
-            #         #redirect to provider home
-            #     return render(request, "welcome.html")
-            # else:
-            #     return render(request, "registration/login.html", {"form": form})
-        else:
-            return render(request, "registration/login.html", {"form": form})
 
-    
-    
+
+
+
+
+
     
 class Logout(View):
     def get(self, request):
@@ -177,7 +199,7 @@ class Logout(View):
         if user is not None:
             logout(request)
             return render(request, "landingpage.html")
-        return redirect('')
+
 
 #Here be dragons
 ###############################################################################################################################
