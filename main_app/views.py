@@ -136,34 +136,25 @@ class Provider_Additional_Reg(View):
 class Login(View):
     def get(self, request):
         form = UserLogin()
-        context = {"form": form}
-        return render(request, "registration/login.html", context)
+        return render(request, 'registration/login.html', {'form': form})
 
     def post(self, request):
         form = UserLogin(data=request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(username=username, password=password)
+        user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
+            print("glorious")
             login(request, user)
-            return render(request, "welcome.html")
-            # if user is not None:
-
-            #     if user.usertype == 'Patient':
-            #         return render(request, "home.html")
-            #         #redirect to patient home
-            #     elif user.usertype == 'Scheduler':
-            #         return render(request, "home.html")
-            #         #redirect to scheduler home
-            #     elif user.usertype == 'Provider':
-            #         return render(request, "home.html")
-            #         #redirect to provider home
-            #     return render(request, "welcome.html")
-            # else:
-            #     return render(request, "registration/login.html", {"form": form})
+            return redirect('home')
+        # if user.check_password(request.POST['password']):
+        #     login(request, user)
+        #     return redirect('home')
+        # print(user)
         else:
-            return render(request, "registration/login.html", {"form": form})
+            print("fail")
+            return render(request, 'registration/login.html', {'form': form})
 
+
+        
     
     
     
