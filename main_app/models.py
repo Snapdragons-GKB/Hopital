@@ -1,4 +1,6 @@
 
+from calendar import TUESDAY
+
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -66,61 +68,24 @@ class Provider(models.Model):
         ('Medicare', 'Medicare'),
         ('Private', 'Private'),
     ]
+    AVAILABILITY_CHOICES = [
+        ('Unavailable', 'Unavailable'),
+        ('Available', 'Available'),
+        ('Filled', 'Filled'),
+    ]
     providerProfile = models.OneToOneField(User, on_delete=models.CASCADE)
     provider_personal_blurb = models.CharField(max_length=200)
     provider_specialization = models.CharField(max_length=20, choices=SPECIALTY_CHOICE, default=SPECIALTY_CHOICE[0][0])
     provider_insurances_taken = models.CharField(max_length=20, choices=INSURANCE_CHOICE, default=INSURANCE_CHOICE[0][0])
-    day1 = models.BooleanField(default=False)
-    day2 = models.BooleanField(default=False)
-    day3 = models.BooleanField(default=False)
-    day4 = models.BooleanField(default=False)
-    day5 = models.BooleanField(default=False)
-    day6 = models.BooleanField(default=False)
-    day7 = models.BooleanField(default=False)
+    monday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
+    tuesday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
+    wednesday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
+    thursday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
+    friday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
+    saturday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
+    sunday = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default=AVAILABILITY_CHOICES[0][0])
 
     
-
-
-# class PatientRequest(models.Model):
-#     class request_status(models.TextChoices):
-#         SUBMITTED = 0, 'Awating Response'
-#         ACCEPTED = 1, 'Accepted'
-#         REJECTED = 2, 'Rejected'
-#         COMPLETED = 3, 'Completed'
-    
-#     class ailment_category(models.TextChoices):
-#         NONE = 0, 'None'
-#         GENERAL_MEDICINE = 1, 'General Medicine'
-#         ORTHOPEDICS = 2, 'Orthopedics'
-#         CARDIOLOGY = 3, 'Cardiology'
-#         NEUROLOGY = 4, 'Neurology'
-#         PEDIATRICS = 5, 'Pediatrics'
-#         EMERGENCY = 6, 'Emergency'
-#         PSYCHIATRY = 7, 'Psychiatry'
-#         RADIOLOGY = 8, 'Radiology'
-#         INTERNAL_MEDICINE = 9, 'Internal Medicine'
-#         OTHER = 10, 'Other'
-
-
-#     request_status = models.CharField(max_length=20, choices=request_status.choices, default=request_status.SUBMITTED)
-    
-#     request_patient_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientofrequest')
-#     request_scheduler_profile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schedulerofrequest', default=None)
-#     request_doctor_profile= models.ForeignKey(User, on_delete=models.CASCADE, related_name='doctorofrequest', default=None)
-    
-#     request_ailment_category = models.CharField(max_length=20, choices=ailment_category.choices, default=ailment_category.NONE)
-#     request_ailment_description = models.CharField(max_length=80)
-    
-#     request_preferred_date_range_start = models.DateField()
-#     request_preferred_date_range_end = models.DateField()
-
-#     request_procedure_date = models.DateField()
-#     request_scheduling_comment = models.TextField(default=None)
-
-#     request_doctor_comment_on_operation = models.TextField(default=None)
-
-
-
 
 #Here be dragons
 ###############################################################################################################################
@@ -139,16 +104,46 @@ class PatientRequestForAppointment(models.Model):
         ('Internal Medicine', 'Internal Medicine'),
         ('Other', 'Other'),
         ]
+    DAY_OF_ENCOUNTER_CHOICES = [
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday'),
+    ]
     
     #natively added
-    patientProfile = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientofrequest')
+    patientUser = models.ForeignKey(User, on_delete=models.CASCADE, related_name='patientofrequest')
     patientInsuranceType = models.CharField(max_length=20, choices=Patient.INSURANCE_CHOICE, default=Patient.INSURANCE_CHOICE[0][0])
-
-
+    patientFirst = models.CharField(max_length=20)
+    patientLast = models.CharField(max_length=20)
     #patient entered
     patient_ailment_category = models.CharField(max_length=20, choices=ailment_category, default=ailment_category[0][0])
-    patient_ailment_description = models.CharField(max_length=80)
-    patient_preferred_date = models.DateField()
+    patient_ailment_description = models.CharField(max_length=80) 
+    patient_preferred_day = models.CharField(max_length=20, choices=DAY_OF_ENCOUNTER_CHOICES, default=DAY_OF_ENCOUNTER_CHOICES[0][0])
 
+    #scheduler data entered later, separate forms
+    schedulerUser = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='schedulerofrequest', blank = True, null=True)
+    accepted = models.BooleanField(blank=True, null=True)
+    scheduler_comment = models.CharField(max_length=200, blank=True, null=True)
 
-    
+class Encounter(models.Model):
+    DAY_OF_ENCOUNTER_CHOICES = [
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday'),
+    ]
+
+    schedulerUser = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='schedulerofencounter')
+    patientUser = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='patientofencounter')
+    providerUser = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True, related_name='providerofencounter')
+    description = models.CharField(max_length=200, blank=True, null=True)
+    encounter_date = models.CharField(max_length=20, choices=DAY_OF_ENCOUNTER_CHOICES, default=DAY_OF_ENCOUNTER_CHOICES[0][0])
+    doctor_comment = models.TextField(default=None, blank=True, null=True)
+    patient_comment = models.TextField(default=None, blank=True, null=True)

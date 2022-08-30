@@ -19,17 +19,20 @@ urlpatterns=[
     path('patient/home/', views.Patient_Home, name="patient-home"),
     path('patient/request/', views.Patient_Request_Appointment.as_view(), name="patient-request"),
     path('patient/detail/', views.Patient_Details, name="patient-detail"),
-
+    path('patient/schedule/', views.Patient_Schedule, name="patient-schedule"),
+    path('patient/requesthistory/', views.Patient_Request_History, name="patient-request-history"),
     #Provider patterns
     #If template, found in provider-templates folder
     path('provider/provider-registration/', views.Provider_Additional_Reg.as_view(), name="provider-registration"),
     path('provider/home/', views.Provider_Home, name="provider-home"),
     path('provider/detail/', views.Provider_Details, name="provider-detail"),
+    path('provider/schedule/', views.Provider_Schedule, name="provider-schedule"),
     
     
     #Scheduler patterns
     #If template, found in scheduler-templates folder
     path('scheduler/home/', views.Scheduler_Home, name="scheduler-home"),
+    path('scheduler/work/', views.Scheduler_Work, name="scheduler-work"),
 
 
 

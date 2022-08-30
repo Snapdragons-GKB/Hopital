@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+
+            <a class="navbar-item" href="{% url 'scheduler-home' %}">Scheduler</a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu navbar-end">
+            <a class="navbar-item" href="{% url 'scheduler-work' %}">Requests</a>
+            <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+
+
+    </nav>
+</header>
+<div class="box">
+    <p class="is-size-3">Requests awaiting correspondence:</p>{{patient}}
+    <!-- {{data.values}} -->
+    <!-- {{request.values}} -->
+    <br>
+    {% for request in data.values %}
+    <div class="box">
+        <p class="is-size-4">Patient request:</p>
+        <p>Name: {{request.patientFirst}} {{request.patientLast}}</p>
+        <p>Insurance status: {{request.patientInsurance}}</p>
+        <p>Preferred day of scheduling: {{request.day}}</p>
+        
+        <p class="is-size-4">Patient ailment description:</p>
+        <p>Ailment category: {{request.patientAilmentCategory}}</p>
+        <p>Ailment description: {{request.patientAilmentDescription}}</p>
+        <p class="is-size-4">Recommended doctor:</p>
+        <p>Name: {{request.providerFirst}} {{request.providerLast}}</p>
+        <p>Specialty: {{request.providerSpecialization}}</p>
+
+    </div>
+    {% endfor %}
+
+
+
+
+    
+
+
+    {% endblock %}
