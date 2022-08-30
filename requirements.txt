@@ -3,7 +3,7 @@ asgiref==3.5.2
 astroid==2.11.5
 asttokens==2.0.8
 backcall==0.2.0
-# backports.zoneinfo==0.2.1
+backports.zoneinfo==0.2.1
 certifi==2022.6.15
 decorator==5.1.1
 dill==0.3.5.1
@@ -31,7 +31,8 @@ ptyprocess==0.7.0
 pure-eval==0.2.2
 Pygments==2.13.0
 pylint==2.14.1
-# six @ file:///AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-103/six-1.15.0-py2.py3-none-any.whl
+python-dotenv==0.20.0
+six @ file:///AppleInternal/BuildRoot/Library/Caches/com.apple.xbs/Sources/python3/python3-103/six-1.15.0-py2.py3-none-any.whl
 sqlparse==0.4.2
 stack-data==0.4.0
 tomli==2.0.1
