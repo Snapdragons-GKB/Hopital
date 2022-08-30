@@ -362,35 +362,11 @@ class PatientRequestForAppointment(ModelForm):
 #New stuff after remote chopped
 # ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-# class EncounterCreation(ModelForm):
+class EncounterForm(ModelForm):
     
-#     DAY_OF_ENCOUNTER_CHOICES = [
-#         ('Monday', 'Monday'),
-#         ('Tuesday', 'Tuesday'),
-#         ('Wednesday', 'Wednesday'),
-#         ('Thursday', 'Thursday'),
-#         ('Friday', 'Friday'),
-#         ('Saturday', 'Saturday'),
-#         ('Sunday', 'Sunday'),
-#     ]
-#     DOCTOR_OF_ENCOUNTER_CHOICES = Provider.objects.get(data[data.day]=User.objects.get(username='doctor1')),
-#     #native adds not included 
-
-#     #patient entered
-#     encounter_date = forms.CharField(choices=DAY_OF_ENCOUNTER_CHOICES, required=True)
-
-
-#     class Meta:
-        
-#         DAY_OF_ENCOUNTER_CHOICES = [
-#         ('Monday', 'Monday'),
-#         ('Tuesday', 'Tuesday'),
-#         ('Wednesday', 'Wednesday'),
-#         ('Thursday', 'Thursday'),
-#         ('Friday', 'Friday'),
-#         ('Saturday', 'Saturday'),
-#         ('Sunday', 'Sunday'),
-#     ]
-#         model = Encounter
-#         exclude = ['patientUser', 'providerUser', 'doctor_comment', 'doctor_comment', 'patient_comment']
-
+    #native adds not included
+    approved = forms.BooleanField(initial=False, required=False)
+    class Meta:
+        model=Encounter
+        exclude = ['patientUser', 'schedulerUser', 'providerUser', 'description', 'encounter_date', 'doctor_comment', 'patient_comment']
+    

@@ -1,7 +1,7 @@
 
 from django.shortcuts import render, redirect
 from django.views import View
-from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, PatientRequestForAppointment, UserLogin
+from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, PatientRequestForAppointment, UserLogin, EncounterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, get_user_model, login
 
@@ -232,16 +232,14 @@ class Provider_Additional_Reg(View):
 #If template, found in scheduler-templates folder
 
 def Scheduler_Home(request):
+
     return render(request, 'scheduler-templates/scheduler-home.html')
 
 def Scheduler_Work(request):
-    responsedict = {}
-    i=0
-    submittedrequests = PRFA.objects.all()
+    data={}
+    submittedrequests = PRFA.objects.filter(accepted=None)
     provideravailability = Provider.objects.all()
-    print(len(submittedrequests), len(provideravailability))
     for submittedrequest in submittedrequests:
-        print("Hi")
         patientID = submittedrequest.patientUser_id
         patientInsurance = Patient.objects.get(patientProfile_id=patientID).patient_insurance_type
         firstname = submittedrequest.patientFirst
@@ -255,21 +253,44 @@ def Scheduler_Work(request):
 
         if availabledoctors.count() > 0:
             for availableprovider in availabledoctors:
+                print("hit")
                 providerID = availableprovider.providerProfile_id
                 break
             providerfirstname = User.objects.get(id=providerID).first_name
             providerlastname = User.objects.get(id=providerID).last_name
             providerSpecialization = Provider.objects.get(providerProfile_id=providerID).provider_specialization
-            i+=1
 
-            responsedict[i] = dict(patientID=patientID, patientFirst=firstname, patientLast=lastname, patientAilmentCategory=ailmentcat, patientAilmentDescription=patientAilmentDescription, providerID=providerID, providerFirst=providerfirstname, providerLast=providerlastname, day=day, providerSpecialization=providerSpecialization, patientInsurance=patientInsurance)
-            #responsedict[i] = tuple([patientID, firstname, lastname, ailmentcat, patientAilmentDescription, providerID, day, providerfirstname, providerlastname])
+
+            data = dict(patientID=patientID, patientFirst=firstname, patientLast=lastname, patientAilmentCategory=ailmentcat, patientAilmentDescription=patientAilmentDescription, providerID=providerID, providerFirst=providerfirstname, providerLast=providerlastname, day=day, providerSpecialization=providerSpecialization, patientInsurance=patientInsurance)
+        else:
+            next
+
+    if request.method == 'GET':
+        form = EncounterForm()
+        data["form"] = form
+        return render(request, "scheduler-templates/scheduler-work.html", data)
+    if request.method == 'POST':
+        form = EncounterForm(request.POST)
+        print(form["approved"].value())
+        print(request.POST)
+        if form["approved"].value() == True:
+            print("bit")
+            encounter = form.save(commit=False)
+            encounter.schedulerUser = request.user
+            encounter.patientUser = User.objects.get(id=patientID)
+            encounter.providerUser = User.objects.get(id=providerID)
+            encounter.description=patientAilmentDescription
+            encounter.encounter_date=submittedrequest.patient_preferred_day
+            PRFA.objects.filter(id=submittedrequest.id).update(accepted=True)
+            Provider.objects.filter(id=providerID).update(**{day: "Filled"})
+            encounter.save()
+            return render(request, "scheduler-templates/scheduler-home.html")
 
         else:
-            responsedict[i]=dict(patientID=patientID, patientFirst=firstname, patientLast=lastname, patientAilmentCategory=ailmentcat, patientAilmentDescription=patientAilmentDescription, providerID=None, providerFirst=None, providerLast=None, day=day, providerSpecialization=None, patientInsurance=patientInsurance)
-            #responsedict[i] = tuple([patientID, firstname, lastname, ailmentcat, patientAilmentDescription, "No Provider Available", day, "No Provider Available", "No Provider Available"])
-
-        #passing number of requests to scheduler-home.html
-
-    return render(request, 'scheduler-templates/scheduler-work.html', {"data":responsedict})
+            PRFA.objects.filter(id=submittedrequest.id).update(accepted=False)
+            return render(request, 'scheduler-templates/scheduler-work.html', data)
     
+    
+
+
+

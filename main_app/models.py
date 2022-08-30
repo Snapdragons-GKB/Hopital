@@ -1,6 +1,7 @@
 
 from calendar import TUESDAY
 
+
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -147,3 +148,4 @@ class Encounter(models.Model):
     encounter_date = models.CharField(max_length=20, choices=DAY_OF_ENCOUNTER_CHOICES, default=DAY_OF_ENCOUNTER_CHOICES[0][0])
     doctor_comment = models.TextField(default=None, blank=True, null=True)
     patient_comment = models.TextField(default=None, blank=True, null=True)
+    approved = models.BooleanField(blank=True, null=True)
