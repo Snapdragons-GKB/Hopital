@@ -5,7 +5,7 @@ from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, Pati
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, get_user_model, login
 
-from main_app.models import Scheduler, Patient, Provider
+from main_app.models import Scheduler, Patient, Provider, PatientRequestForAppointment as PRFA
 User=get_user_model()
 
 # Create your views here.
@@ -59,7 +59,9 @@ class Login(View):
         form = UserLogin(data=request.POST)
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
-            login(request, user)
+            login(request, user) 
+            #redirect v render possible cause of telescoping page
+            #user not recognized also possible cause of upper bar stiill being in logged out state
             if user.usertype == 'Patient':
                 return render(request, 'patient-templates/patient-home.html')
             elif user.usertype == 'Scheduler':
@@ -142,14 +144,31 @@ class Patient_Request_Appointment(View):
 
 
 
+
+
+
+
+
 #Provider views
 #If template, found in provider-templates folder
 
-def Provider_Home(request): 
+def Provider_Home(request):
+    approvedrequests = PRFA.objects.all()
+    for rubbish in approvedrequests:
+        print(rubbish)
+        return render(request, 'provider-templates/provider-home.html', {
+            "patient":rubbish.patientProfile,
+            "insurancetype":rubbish.patientInsuranceType,
+            "ailmentcategory":rubbish.patient_ailment_category,
+            "ailmentdescription":rubbish. patient_ailment_description,
+            "preffereddate":rubbish.patient_preferred_date,
+        })
     return render(request, 'provider-templates/provider-home.html')
+
 
 def Provider_Welcome(request):
     return render(request, 'provider-templates/provider-welcome.html')
+
 
 def Provider_Details(request):
     providerdata = Provider.objects.all()
@@ -157,12 +176,14 @@ def Provider_Details(request):
     for provider in providerdata:
         if provider.providerProfile_id == ouruserrightnowID:
             return render(request, 'provider-templates/provider-details.html', {
-                "blurb": provider.provider_blurb,
+                "blurb": provider.provider_personal_blurb,
                 "specialization": provider.provider_specialization,
                 "insurances": provider.provider_insurances_taken,
                 })
 
     return render(request, 'provider-templates/provider-details.html')
+
+   
 
 class Provider_Additional_Reg(View): 
     def get(self, request):
