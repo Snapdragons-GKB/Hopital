@@ -3,7 +3,7 @@ asgiref==3.5.2
 astroid==2.11.5
 asttokens==2.0.8
 backcall==0.2.0
-backports.zoneinfo==0.2.1
+# backports.zoneinfo==0.2.1
 certifi==2022.6.15
 decorator==5.1.1
 dill==0.3.5.1
