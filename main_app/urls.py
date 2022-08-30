@@ -19,7 +19,6 @@ urlpatterns=[
     path('patient/home/', views.Patient_Home, name="patient-home"),
     path('patient/request/', views.Patient_Request_Appointment.as_view(), name="patient-request"),
     path('patient/detail/', views.Patient_Details, name="patient-detail"),
-    path('patient/schedule/', views.Patient_Schedule, name="patient-schedule"),
     path('patient/requesthistory/', views.Patient_Request_History, name="patient-request-history"),
     #Provider patterns
     #If template, found in provider-templates folder

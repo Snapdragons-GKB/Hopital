@@ -3,9 +3,7 @@
 <header>
   <nav class="navbar is-link" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-          {% if user.is_authenticated %}
-          <a class="navbar-item" href="{% url 'patient-home' %}" >Welcome {{user.first_name}}</a>
-          {% endif %}
+          <a class="navbar-item" href="{% url 'patient-home' %}" >Patient</a>
           <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
               <span aria-hidden="true"></span>
               <span aria-hidden="true"></span>
@@ -13,9 +11,9 @@
           </a>
       </div>
       <div class="navbar-menu navbar-end">
-          
           <a class="navbar-item" href="{% url 'patient-detail' %}">Patient Detail</a>
           <a class="navbar-item" href="{% url 'patient-request' %}">Patient Request</a>
+          <a class="navbar-item" href="{% url 'patient-request-history' %}">Patient Request History</a>
           <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
       </div>
   </nav>

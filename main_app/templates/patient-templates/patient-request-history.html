@@ -3,33 +3,34 @@
 <header>
     <nav class="navbar is-link" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            {% if user.is_authenticated %}
-            <a class="navbar-item" href="{% url 'patient-home' %}">Welcome {{user.first_name}}</a>
-            {% else %}
-            <a class="navbar-item" href="{% url 'login' %}">Not logged in</a>
-            {% endif %}
+            <a class="navbar-item" href="{% url 'patient-home' %}">Patient</a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
-        {% if user.is_authenticated %}
         <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'about' %}">About</a>
             <a class="navbar-item" href="{% url 'patient-detail' %}">Patient Detail</a>
             <a class="navbar-item" href="{% url 'patient-request' %}">Patient Request</a>
+            <a class="navbar-item" href="{% url 'patient-request-history' %}">Patient Request History</a>
             <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
         </div>
-        {% else %}
-        <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'signup' %}">Sign Up</a>
-            <a class="navbar-item" href="{% url 'login' %}">Log In</a>
-        </div>
-        {% endif %}
+        
     </nav>
 </header>
-<h1>GKB Hospital</h1>
-<h2>Home to the GKB Hospital</h2>
+<main>
+    <p class="is-size-3">Patient Request History:</p>
+
+    {%for incident in data%}
+
+    <p class="is-size-4">Patient request:</p>
+        <p>Preferred day of scheduling: {{incident.patient_preferred_day}}</p>
+        <p>Ailment type: {{incident.patient_ailment_category}}</p>
+        <p>Ailment description: {{incident.patient_ailment_description}}</p>
+        <p>Accepted for treatment: {{incident.accepted}}</p>
+        <br>
+    {%endfor%}
+</main>
 
 {% endblock %}

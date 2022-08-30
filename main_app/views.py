@@ -107,11 +107,11 @@ def Patient_Details(request):
                 })
     return render(request, 'patient-templates/patient-details.html')
 
-def Patient_Schedule(request):
-    return render(request, 'patient-templates/patient-schedule.html')
-
 def Patient_Request_History(request):
-    return render(request, 'patient-templates/patient-request-history.html')
+    requests = PRFA.objects.filter(patientUser=request.user)
+
+
+    return render(request, 'patient-templates/patient-request-history.html', {"data": requests})
 
 
 
@@ -200,8 +200,6 @@ def Provider_Details(request):
     return render(request, 'provider-templates/provider-details.html')
 
 def Provider_Schedule(request):
-    # data = Encounter.objects.filter(provider=request.user)
-    # dingo = dict(data=data)
     return render(request, 'provider-templates/provider-schedule.html')
 
 
