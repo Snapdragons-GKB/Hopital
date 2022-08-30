@@ -5,7 +5,7 @@ from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, Pati
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, get_user_model, login
 
-from main_app.models import Scheduler, Patient, Provider, PatientRequestForAppointment as PRFA, User
+from main_app.models import Scheduler, Patient, Provider, PatientRequestForAppointment as PRFA, User, Encounter
 User=get_user_model()
 
 # Create your views here.
@@ -200,7 +200,10 @@ def Provider_Details(request):
     return render(request, 'provider-templates/provider-details.html')
 
 def Provider_Schedule(request):
+    # data = Encounter.objects.filter(provider=request.user)
+    # dingo = dict(data=data)
     return render(request, 'provider-templates/provider-schedule.html')
+
 
    
 

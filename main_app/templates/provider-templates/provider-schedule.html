@@ -24,13 +24,15 @@
 
 <div class="box">
     <p class="is-size-3">Schedule of Dr. {{user.last_name}} for the week:</p>{{patient}}
-    <p>Monday: {{request.user.provider.monday}}</p>
-    <p>Tuesday: {{request.user.provider.tuesday}}</p>
-    <p>Wednesday: {{request.user.provider.wednesday}}</p>
-    <p>Thursday: {{request.user.provider.thursday}}</p>
-    <p>Friday: {{request.user.provider.friday}}</p>
-    <p>Saturday: {{request.user.provider.saturday}}</p>
-    <p>Sunday: {{request.user.provider.sunday}}</p>
+    <p>Monday: {{request.user.provider.monday}} {{monday}}</p>
+    <p>Tuesday: {{request.user.provider.tuesday}} {{tuesday}}</p>
+    <p>Wednesday: {{request.user.provider.wednesday}} {{wednesday}}</p>
+    <p>Thursday: {{request.user.provider.thursday}} {{thursday}}</p>
+    <p>Friday: {{request.user.provider.friday}} {{friday}}</p>
+    <p>Saturday: {{request.user.provider.saturday}} {{saturday}}</p>
+    <p>Sunday: {{request.user.provider.sunday}} {{sunday}}</p>
+
+
 
     <!-- <ul>
         {% for appointment in appointments %}
