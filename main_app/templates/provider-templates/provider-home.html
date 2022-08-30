@@ -22,10 +22,15 @@
 </header>
 <h1>Provider home</h1>
 <h2>Home to the GKB Hospital</h2>
-
-<p>{{patient}}</p>
-<p>{{insurancetype}}</p>
-<p>{{ailmentcategory}}</p>
+<div class="box">
+    <p class="is-size-3">Welcome Doctor {{user.last_name}}, Here are Your Procedure Requests:</p>
+    <p>Patient Name: {{patient}}</p>
+    <p>Patient Insurance Type: {{insurancetype}}</p>
+    <p>Patient Ailment Category: {{ailmentcategory}}</p>
+    <p>Patient Ailment Description: {{ailmentdescription}}</p>
+    <p>Patient Preferred Date: {{preferreddate}}</p>
+    
+  </div>
 
 
 
