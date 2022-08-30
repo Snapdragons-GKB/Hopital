@@ -144,3 +144,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 AUTHENTICATION_BACKENDS = [
     'main_app.backends.CheckPasswordBackend',
 ]
+
+# Configure Django App for Heroku.
+import django_on_heroku
+django_on_heroku.settings(locals())
