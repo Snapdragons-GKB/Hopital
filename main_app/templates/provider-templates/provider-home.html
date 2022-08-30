@@ -3,7 +3,7 @@
 <header>
     <nav class="navbar is-link" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="{% url 'provider-home' %}">Welcome {{user.first_name}}</a>
+            <a class="navbar-item" href="{% url 'provider-home' %}">Provider</a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -12,17 +12,23 @@
         </div>
 
         <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'about' %}">About</a>
-            <a class="navbar-item" href="{% url 'provider-detail' %}">provider Detail</a>
+            <a class="navbar-item" href="{% url 'provider-schedule' %}">Schedule</a>
+            <a class="navbar-item" href="{% url 'provider-detail' %}">Provider Detail</a>
             <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
         </div>
 
 
     </nav>
 </header>
-<h1>Provider home</h1>
-<h2>Home to the GKB Hospital</h2>
+
 <div class="box">
+    <p class="is-size-3">Welcome back, Doctor {{user.last_name}}.</p>
+    
+</div>
+
+
+
+<!-- <div class="box">
     <p class="is-size-3">Welcome Doctor {{user.last_name}}, Here are Your Procedure Requests:</p>
     <p>Patient Name: {{patient}}</p>
     <p>Patient Insurance Type: {{insurancetype}}</p>
@@ -30,7 +36,7 @@
     <p>Patient Ailment Description: {{ailmentdescription}}</p>
     <p>Patient Preferred Date: {{preferreddate}}</p>
     
-  </div>
+</div> -->
 
 
 

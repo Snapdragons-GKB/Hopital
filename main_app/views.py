@@ -1,11 +1,11 @@
 
 from django.shortcuts import render, redirect
 from django.views import View
-from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, PatientRequestForAppointment, UserLogin
+from main_app.forms import AdditionalPatient, AdditionalProvider, UserForm, PatientRequestForAppointment, UserLogin, EncounterForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, logout, get_user_model, login
 
-from main_app.models import Scheduler, Patient, Provider, PatientRequestForAppointment as PRFA
+from main_app.models import Scheduler, Patient, Provider, PatientRequestForAppointment as PRFA, User, Encounter
 User=get_user_model()
 
 # Create your views here.
@@ -79,6 +79,9 @@ class Logout(View):
             return render(request, "general-templates/general-landingpage.html")
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Patient
+# ---------------------------------------------------------------------------------------------------------------------
 
 
 #Patient views
@@ -102,8 +105,15 @@ def Patient_Details(request):
                 "conditions": patient.patient_preexisting_conditions,
                 "medications": patient.patient_current_medications
                 })
-
     return render(request, 'patient-templates/patient-details.html')
+
+def Patient_Request_History(request):
+    requests = PRFA.objects.filter(patientUser=request.user)
+
+
+    return render(request, 'patient-templates/patient-request-history.html', {"data": requests})
+
+
 
 class Patient_Additional_Reg(View):
     def get(self, request):
@@ -116,6 +126,7 @@ class Patient_Additional_Reg(View):
         context = {"form": form}
         if form.is_valid():
             patient = form.save(commit=False)
+            print(request.user, request.user.first_name, request.user.last_name)
             patient.patientProfile = request.user
             patient.save()
             return render(request, "patient-templates/patient-home.html")
@@ -135,7 +146,11 @@ class Patient_Request_Appointment(View):
         context = {"form": form}
         if form.is_valid():
             patientrequest = form.save(commit=False)
-            patientrequest.patientProfile = request.user
+            patientrequest.patientUser = request.user
+            patientrequest.patientInsurance = request.user.patient.patient_insurance_type
+            patientrequest.patientFirst=request.user.first_name
+            patientrequest.patientLast=request.user.last_name
+            patientrequest.email=request.user.email
             patientrequest.save()
             return render(request, "patient-templates/patient-home.html")
         else:
@@ -146,8 +161,9 @@ class Patient_Request_Appointment(View):
 
 
 
-
-
+# ---------------------------------------------------------------------------------------------------------------------
+# Provider
+# ---------------------------------------------------------------------------------------------------------------------
 
 #Provider views
 #If template, found in provider-templates folder
@@ -157,11 +173,11 @@ def Provider_Home(request):
     for rubbish in approvedrequests:
         print(rubbish)
         return render(request, 'provider-templates/provider-home.html', {
-            "patient":rubbish.patientProfile,
+
             "insurancetype":rubbish.patientInsuranceType,
             "ailmentcategory":rubbish.patient_ailment_category,
             "ailmentdescription":rubbish. patient_ailment_description,
-            "preferreddate":rubbish.patient_preferred_date,
+
         })
     return render(request, 'provider-templates/provider-home.html')
 
@@ -182,6 +198,10 @@ def Provider_Details(request):
                 })
 
     return render(request, 'provider-templates/provider-details.html')
+
+def Provider_Schedule(request):
+    return render(request, 'provider-templates/provider-schedule.html')
+
 
    
 
@@ -205,12 +225,73 @@ class Provider_Additional_Reg(View):
 
 
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Scheduler
+# ---------------------------------------------------------------------------------------------------------------------
 
 #Scheduler views
 #If template, found in scheduler-templates folder
 
 def Scheduler_Home(request):
+
     return render(request, 'scheduler-templates/scheduler-home.html')
 
-def Scheduler_Welcome(request):
-    return render(request, 'scheduler-templates/scheduler-welcome.html')
+def Scheduler_Work(request):
+    data={}
+    submittedrequests = PRFA.objects.filter(accepted=None)
+    provideravailability = Provider.objects.all()
+    for submittedrequest in submittedrequests:
+        patientID = submittedrequest.patientUser_id
+        patientInsurance = Patient.objects.get(patientProfile_id=patientID).patient_insurance_type
+        firstname = submittedrequest.patientFirst
+        lastname = submittedrequest.patientLast
+        patientID = submittedrequest.patientUser_id
+        ailmentcat = submittedrequest.patient_ailment_category
+        patientAilmentDescription = submittedrequest.patient_ailment_description
+
+        day = submittedrequest.patient_preferred_day.lower()
+        availabledoctors = provideravailability.filter(**{day: "Available"})
+
+        if availabledoctors.count() > 0:
+            for availableprovider in availabledoctors:
+                print("hit")
+                providerID = availableprovider.providerProfile_id
+                break
+            providerfirstname = User.objects.get(id=providerID).first_name
+            providerlastname = User.objects.get(id=providerID).last_name
+            providerSpecialization = Provider.objects.get(providerProfile_id=providerID).provider_specialization
+
+
+            data = dict(patientID=patientID, patientFirst=firstname, patientLast=lastname, patientAilmentCategory=ailmentcat, patientAilmentDescription=patientAilmentDescription, providerID=providerID, providerFirst=providerfirstname, providerLast=providerlastname, day=day, providerSpecialization=providerSpecialization, patientInsurance=patientInsurance)
+        else:
+            next
+
+    if request.method == 'GET':
+        form = EncounterForm()
+        data["form"] = form
+        return render(request, "scheduler-templates/scheduler-work.html", data)
+    if request.method == 'POST':
+        form = EncounterForm(request.POST)
+        print(form["approved"].value())
+        print(request.POST)
+        if form["approved"].value() == True:
+            print("bit")
+            encounter = form.save(commit=False)
+            encounter.schedulerUser = request.user
+            encounter.patientUser = User.objects.get(id=patientID)
+            encounter.providerUser = User.objects.get(id=providerID)
+            encounter.description=patientAilmentDescription
+            encounter.encounter_date=submittedrequest.patient_preferred_day
+            PRFA.objects.filter(id=submittedrequest.id).update(accepted=True)
+            Provider.objects.filter(id=providerID).update(**{day: "Filled"})
+            encounter.save()
+            return render(request, "scheduler-templates/scheduler-home.html")
+
+        else:
+            PRFA.objects.filter(id=submittedrequest.id).update(accepted=False)
+            return render(request, 'scheduler-templates/scheduler-work.html', data)
+    
+    
+
+
+

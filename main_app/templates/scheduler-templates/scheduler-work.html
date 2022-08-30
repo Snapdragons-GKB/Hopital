@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<header>
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+
+            <a class="navbar-item" href="{% url 'scheduler-home' %}">Scheduler</a>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu navbar-end">
+            <a class="navbar-item" href="{% url 'scheduler-work' %}">Requests</a>
+            <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
+        </div>
+
+
+    </nav>
+</header>
+<div class="box">
+    <p class="is-size-3">Request awaiting correspondence:</p>{{patient}}
+    {% if not patientID %}
+    <p> None today chief. Keep it up.</p>
+    {% else %}
+    
+    <div class="box">
+        <p class="is-size-4">Patient request:</p>
+        <p>Name: {{patientFirst}} {{patientLast}}</p>
+        <p>Insurance status: {{patientInsurance}}</p>
+        <p>Preferred day of scheduling: {{day}}</p>
+
+        <p class="is-size-4">Patient ailment description:</p>
+        <p>Ailment category: {{patientAilmentCategory}}</p>
+        <p>Ailment description: {{patientAilmentDescription}}</p>
+        <p class="is-size-4">Recommended doctor:</p>
+        <p>Name: {{providerFirst}} {{providerLast}}</p>
+        <p>Specialty: {{providerSpecialization}}</p>
+    </div>
+
+
+        <!-- <input type="submit" method="post" action="{% url 'scheduler-work' %}" class="button is-link"> I want this
+        patient to succeed </button>
+        <input type="kill" method="post" action="{% url 'scheduler-work' %}" class="button is-danger"> I hate this
+        patient and he deserves the American healthcare system </button> -->
+
+    
+    
+    <form method="post" action="{% url 'scheduler-work' %}">
+        {% csrf_token %} {{form.as_p}}
+        <button type="submit" method="post" class="button is-link" action="{% url 'scheduler-work' %}" class="button is-link" value="Accepted"> Submit</button>
+        <button type="submit" method="post" class="button is-danger" action="{% url 'scheduler-work' %}" class="button is-link" value="False"> Look at this schmuck! </button>
+        
+    </form>
+
+    {% endif %}
+
+
+
+
+
+
+
+    {% endblock %}

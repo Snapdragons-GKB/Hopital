@@ -3,38 +3,40 @@
 <header>
     <nav class="navbar is-link" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            {% if user.is_authenticated %}
-            <a class="navbar-item" href="{% url 'patient-home' %}" >Welcome {{user.first_name}}</a>
-            {% endif %}
+            <a class="navbar-item" href="{% url 'patient-home' %}">Patient</a>
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
             </a>
         </div>
-        
+
         <div class="navbar-menu navbar-end">
-            <a class="navbar-item" href="{% url 'about' %}">About</a>
             <a class="navbar-item" href="{% url 'patient-detail' %}">Patient Detail</a>
             <a class="navbar-item" href="{% url 'patient-request' %}">Patient Request</a>
+            <a class="navbar-item" href="{% url 'patient-request-history' %}">Patient Request History</a>
             <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
         </div>
-        
+
     </nav>
-    </header>
+</header>
 
 <h1>{{user.first_name}} {{user.last_name}}'s Patient Details</h1>
 <div class="container">
     <div class="notification is-primary">
 
-            <p>{{user.first_name}}'s Age:</p><p class="has-text-black ">{{age}}</p>
-            <p>{{user.first_name}}'s Insurance Type:</p><p class="has-text-black ">{{insurance}}</p> 
-            <p>{{user.first_name}}'s Preexisting Conditions:</p><p class=" has-text-black">{{conditions}}</p> 
-            <p>{{user.first_name}}'s Current Medications:</p><p class="has-text-black">{{medications}}</p>
-    
-      
-  
+        <p>{{user.first_name}}'s Age:</p>
+        <p class="has-text-black ">{{age}}</p>
+        <p>{{user.first_name}}'s Insurance Type:</p>
+        <p class="has-text-black ">{{insurance}}</p>
+        <p>{{user.first_name}}'s Preexisting Conditions:</p>
+        <p class=" has-text-black">{{conditions}}</p>
+        <p>{{user.first_name}}'s Current Medications:</p>
+        <p class="has-text-black">{{medications}}</p>
 
-    
-  </div>
-  {% endblock %} 
+
+
+
+
+    </div>
+    {% endblock %}

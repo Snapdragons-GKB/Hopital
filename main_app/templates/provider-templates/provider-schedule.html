@@ -3,9 +3,7 @@
 <header>
     <nav class="navbar is-link" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            {% if user.is_authenticated %}
             <a class="navbar-item" href="{% url 'provider-home' %}">Provider</a>
-            {% endif %}
             <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
                 <span aria-hidden="true"></span>
                 <span aria-hidden="true"></span>
@@ -19,22 +17,30 @@
             <a class="navbar-item" href="{% url 'logout' %}">Logout</a>
         </div>
 
+
     </nav>
 </header>
+
+
 <div class="box">
-    <p class="is-size-3">Details of Dr. {{user.last_name}} at Hopital:</p>{{patient}}
-    <p>Background: {{blurb}}</p>
-    <p>Field of practice: {{specialization}}</p>
-    <p>Insurances taken above: {{insurances}}</p>
-
-
-    <!-- <ul>
-            {% for appointment in appointments %}
-                <li>{{appointment.time}}</li>
-            {% endfor %} -->
-    
-
+    <p class="is-size-3">Schedule of Dr. {{user.last_name}} for the week:</p>{{patient}}
+    <p>Monday: {{request.user.provider.monday}} {{monday}}</p>
+    <p>Tuesday: {{request.user.provider.tuesday}} {{tuesday}}</p>
+    <p>Wednesday: {{request.user.provider.wednesday}} {{wednesday}}</p>
+    <p>Thursday: {{request.user.provider.thursday}} {{thursday}}</p>
+    <p>Friday: {{request.user.provider.friday}} {{friday}}</p>
+    <p>Saturday: {{request.user.provider.saturday}} {{saturday}}</p>
+    <p>Sunday: {{request.user.provider.sunday}} {{sunday}}</p>
 </div>
+
+<!-- <ul>
+        {% for appointment in appointments %}
+            <li>{{appointment.time}}</li>
+        {% endfor %} -->
+    <!-- <p>: {{insurancetype}}</p>
+    <p>: {{ailmentcategory}}</p>
+    <p>: {{ailmentdescription}}</p>
+    <p>: {{preferreddate}}</p> -->
 
 
 {% endblock %}
