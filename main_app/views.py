@@ -161,7 +161,7 @@ def Provider_Home(request):
             "insurancetype":rubbish.patientInsuranceType,
             "ailmentcategory":rubbish.patient_ailment_category,
             "ailmentdescription":rubbish. patient_ailment_description,
-            "preffereddate":rubbish.patient_preferred_date,
+            "preferreddate":rubbish.patient_preferred_date,
         })
     return render(request, 'provider-templates/provider-home.html')
 
